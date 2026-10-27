@@ -1,4 +1,4 @@
-# ⚡ Disaster Management — Hyper-Local Severe Weather Nowcasting & Early Warning System
+ # ⚡ Disaster Management — Hyper-Local Severe Weather Nowcasting & Early Warning System
 
 ![Disaster Management Status](https://img.shields.io/badge/Nowcast_Horizon-2_to_6_Hours-06b6d4?style=for-the-badge)
 ![Grid Resolution](https://img.shields.io/badge/Spatial_Grid-2km_x_2km_PostGIS-10b981?style=for-the-badge)
