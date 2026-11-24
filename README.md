@@ -5,6 +5,10 @@ across India — with saved locations, search history, 20 languages, and a
 light/dark theme. Runs on your own machine with one double-click, no paid
 API keys required.
 
+
+LINK==== https://drive.google.com/drive/folders/1Xlve9tGuNYQq5CbjK8DELBCmYygX3vI5?usp=sharing
+
+
 ## Features
 
 - **Live weather** — current conditions, 24-hour hourly strip, and a 7-day
