@@ -1,58 +1,36 @@
 @echo off
-title Disaster Management - Hyper-Local Severe Weather Nowcasting System
-color 0B
+title India Disaster and Weather Tracker
+cd /d "%~dp0backend"
 
-echo ===============================================================================
-echo    DISASTER MANAGEMENT : HYPER-LOCAL SEVERE WEATHER NOWCASTING SYSTEM (2-6 HR)
-echo    ConvLSTM + INSAT-3DR + IMD Doppler Radar + Open-Meteo Early Warning Platform
-echo ===============================================================================
-echo.
+echo ============================================
+echo  India Disaster and Weather Tracker - Setup
+echo ============================================
 
-:: 1. Check for Node.js
-where node >nul 2>nul
-if %ERRORLEVEL% NEQ 0 (
-    color 0C
-    echo [ERROR] Node.js is not installed or not in your system PATH.
-    echo Please install Node.js (v18+) from https://nodejs.org/ and run start.bat again.
+where python >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Python was not found on this system.
+    echo Please install Python 3.9+ from https://www.python.org/downloads/
+    echo During install, check "Add python.exe to PATH".
     pause
     exit /b 1
 )
 
-for /f "tokens=*" %%i in ('node -v') do set NODE_VER=%%i
-echo [OK] Detected Node.js version: %NODE_VER%
-
-:: 2. Check for Python & Launch FastAPI Backend if present
-where python >nul 2>nul
-if %ERRORLEVEL% EQU 0 (
-    if exist "backend\main.py" (
-        echo [INFO] Python detected. Preparing FastAPI Nowcasting Backend Service...
-        if not exist "backend\.venv" (
-            echo [INFO] Creating Python virtual environment in backend\.venv...
-            python -m venv backend\.venv
-        )
-        echo [INFO] Starting FastAPI Server on http://localhost:8000 ...
-        start "Disaster Management - FastAPI Backend" cmd /k "cd backend && call .venv\Scripts\activate && pip install -r requirements.txt --quiet && uvicorn main:app --reload --host 0.0.0.0 --port 8000"
-    )
-) else (
-    echo [WARN] Python not found in PATH. Running in standalone React + Live Open-Meteo mode.
+if not exist venv (
+    echo Creating virtual environment...
+    python -m venv venv
 )
 
-:: 3. Install Frontend Dependencies if node_modules is missing
-if not exist "node_modules" (
-    echo.
-    echo [INFO] Installing React, Vite, Tailwind, Leaflet, and Recharts dependencies...
-    call npm install
-    if %ERRORLEVEL% NEQ 0 (
-        color 0C
-        echo [ERROR] npm install failed. Please check your internet connection.
-        pause
-        exit /b 1
-    )
-)
+call venv\Scripts\activate.bat
 
-:: 4. Launch Vite Development Server and Open Browser
+echo Installing/updating dependencies ^(first run only takes a minute^)...
+pip install --quiet --disable-pip-version-check -r requirements.txt
+
 echo.
-echo [SUCCESS] Launching Disaster Management Command Dashboard on http://localhost:5173 ...
-echo ===============================================================================
-call npm run dev -- --open
+echo Starting server at http://localhost:8000
+echo Press CTRL+C in this window to stop the server.
+echo.
+
+start "" http://localhost:8000
+uvicorn app:app --host 0.0.0.0 --port 8000
+
 pause
